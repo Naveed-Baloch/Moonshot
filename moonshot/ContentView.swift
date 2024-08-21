@@ -9,18 +9,27 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(.image)
-                .resizable()
-                .containerRelativeFrame(.horizontal){ size , axis in
-                    size * 0.3
-                    
+        ScrollView(.horizontal) {
+            LazyHStack(spacing: 10) {
+                ForEach(0..<100) {
+                    CustomText("Item \($0)")
+                        .font(.title)
                 }
-                .containerRelativeFrame(.vertical){ size , axis in
-                    size * 0.1
-                }
+            }
+            .frame(maxWidth: .infinity)
         }
         .padding()
+    }
+}
+
+struct CustomText: View {
+    let value: String
+    var body: some View {
+        Text(value)
+    }
+    init(_ text: String) {
+        print("Creating new Text \(text)")
+        self.value = text
     }
 }
 
