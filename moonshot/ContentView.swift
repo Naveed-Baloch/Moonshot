@@ -7,25 +7,41 @@
 
 import SwiftUI
 
+class User: Codable {
+    let name: String
+    let address: Address
+}
+
+class Address: Codable{
+    let street: String
+    let city: String
+}
+
 struct ContentView: View {
     var body: some View {
         NavigationStack{
-            Text("First Screen")
-            NavigationLink(
-                destination: {
-                Image(.image)
-                    .resizable()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-            }, label: {
-                Image(.image)
-                    .resizable()
-                    .frame(maxWidth: 100, maxHeight: 100)
-                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-            })
             
+            Button("Decode JSON") {
+                let input = """
+                {
+                    "name": "Taylor Swift",
+                    "address": {
+                        "street": "555, Taylor Swift Avenue",
+                        "city": "Nashville"
+                    }
+                }
+                """
+                
+                // Step1
+                let data = Data(input.utf8)
+                // Step 2
+                if let user = try? JSONDecoder().decode(User.self, from: data) {
+                    print("user object is \(user.name) \(user.address.city)")
+                }
+                
+            }
         }
-        .navigationTitle("Navigation in Swift")
+        
         .padding()
     }
 }
