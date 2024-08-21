@@ -12,10 +12,13 @@ struct ContentView: View {
         VStack {
             Image(.image)
                 .resizable()
-                .scaledToFill()
-                .frame(maxWidth: 300, maxHeight: 300)
-                .clipShape(.rect(cornerRadius: 20))
-                .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                .containerRelativeFrame(.horizontal){ size , axis in
+                    size * 0.3
+                    
+                }
+                .containerRelativeFrame(.vertical){ size , axis in
+                    size * 0.1
+                }
         }
         .padding()
     }
