@@ -9,30 +9,26 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        ScrollView(.horizontal) {
-            LazyHStack(spacing: 10) {
-                ForEach(0..<100) {
-                    CustomText("Item \($0)")
-                        .font(.title)
-                }
-            }
-            .frame(maxWidth: .infinity)
+        NavigationStack{
+            Text("First Screen")
+            NavigationLink(
+                destination: {
+                Image(.image)
+                    .resizable()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+            }, label: {
+                Image(.image)
+                    .resizable()
+                    .frame(maxWidth: 100, maxHeight: 100)
+                    .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+            })
+            
         }
+        .navigationTitle("Navigation in Swift")
         .padding()
     }
 }
-
-struct CustomText: View {
-    let value: String
-    var body: some View {
-        Text(value)
-    }
-    init(_ text: String) {
-        print("Creating new Text \(text)")
-        self.value = text
-    }
-}
-
 #Preview {
     ContentView()
 }
