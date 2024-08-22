@@ -7,33 +7,67 @@
 
 import SwiftUI
 
-class User: Codable {
-    let name: String
-    let address: Address
-}
-
-class Address: Codable{
-    let street: String
-    let city: String
-}
-
 struct ContentView: View {
-    let layout = [
-        GridItem(.fixed(80), alignment: .leading),
-        GridItem(.fixed(80)),
-        GridItem(.fixed(80)),
+    let astronauts: [String: Astronaut] = Bundle.main.decode("astronauts.json")
+    let missions: [Mission] = Bundle.main.decode("missions.json")
+    
+    let columns = [
+        GridItem(.adaptive(minimum: 150))
     ]
     
     var body: some View {
-        ScrollView(.vertical) {
-            LazyVGrid(columns: layout) {
-                ForEach(0..<1000) {
-                    Text("Item \($0)")
+        NavigationView {
+            ScrollView {
+                LazyVGrid(columns: columns) {
+                    ForEach(missions) { mission in
+                        NavigationLink(
+                            destination: { MissionView(mission: mission, astronauts: astronauts)},
+                            label: { MissionItem(mission: mission) }
+                        )
+                    }
                 }
+                .padding([.horizontal, .bottom])
             }
+            .navigationTitle("Moonshot")
+            .background(Color.darkBackground)
+            
         }
+        .preferredColorScheme(.dark)
     }
 }
+
+
+@ViewBuilder
+func MissionItem(mission: Mission) -> some View {
+    VStack {
+        Image(mission.image)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 100, height: 100)
+            .padding()
+        
+        VStack {
+            Text(mission.displayName)
+                .font(.headline)
+                .foregroundColor(.white)
+            Text(mission.formattedLaunchDate)
+                .font(.caption)
+            
+                .foregroundColor(.white.opacity(0.5))
+        }
+        .padding(.vertical)
+        .frame(maxWidth: .infinity)
+        .background(Color.lightBackground)
+    }
+    .clipShape(RoundedRectangle(cornerRadius: 10))
+    .overlay(
+        RoundedRectangle(cornerRadius: 10)
+            .stroke(Color.lightBackground)
+    )
+}
+
 #Preview {
     ContentView()
 }
+
+
